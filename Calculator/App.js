@@ -21,10 +21,12 @@ export default class App extends Component{
     this.state= {
         resultText: ""
     }
+    this.operations =['DEL','+','-','*','/']
   }
 
   calculateResult(){
      const text = this.state.resultText
+     console.log(text)
      // now parse this text eg- 3+3*6/2
 
   }
@@ -40,6 +42,7 @@ export default class App extends Component{
   }
 
   operate(operation){
+       console.log(operation)
        switch(operation) {
           case 'DEL' :
                 let text = this.state.resultText.split('')
@@ -47,10 +50,17 @@ export default class App extends Component{
                 this.setState({
                     resultText : text.join('')
                 })
+                break
           case '+':
           case '-':
           case '*':
           case '/':
+                const lastChar = this.state.resultText.split('').pop()
+                if(this.operations.indexOf(lastChar) > 0) return
+               if (this.state.resultText == "") return
+               this.setState({
+                    resultText: this.state.resultText + operation
+               })
        }
   }
 
@@ -68,11 +78,11 @@ export default class App extends Component{
          }
          rows.push(<View style={styles.row}>{row}</View>)
      }
-     let operations =['DEL','+','-','*','/']
+
      let opps= []
       for(let i = 0;i < 5 ; i++){
-          opps.push(<TouchableOpacity style={styles.btn} onPress={() => this.operate(operations[i])}>
-                       <Text style={styles.white}>{operations[i]}</Text>
+          opps.push(<TouchableOpacity style={styles.btn} onPress={() => this.operate(this.operations[i])}>
+                       <Text style={styles.white}>{this.operations[i]}</Text>
                     </TouchableOpacity >)
       }
     return (
