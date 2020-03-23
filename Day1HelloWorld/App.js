@@ -41,6 +41,7 @@ const styles = StyleSheet.create({
   },
   sectionContainer: {
     marginTop: 32,
+    justifyContent: "center",
     paddingHorizontal: 24,
   },
   sectionTitle: {
@@ -57,4 +58,3 @@ const styles = StyleSheet.create({
 
 });
 
-export default App;
