@@ -19,7 +19,8 @@ export default class App extends Component{
   constructor() {
     super()
     this.state= {
-        resultText: ""
+        resultText: "",
+        calculationText: ""
     }
     this.operations =['DEL','+','-','*','/']
   }
@@ -27,14 +28,29 @@ export default class App extends Component{
   calculateResult(){
      const text = this.state.resultText
      console.log(text)
+     this.setState({
+         calculationText: eval(text)
+     })
      // now parse this text eg- 3+3*6/2
 
+  }
+
+  validate(){
+     const text = this.state.resultText
+     switch(text.slice(-1)){
+          case '+':
+          case '-':
+          case '*':
+          case '/':
+               return false
+     }
+     return true
   }
 
   buttonPressed(text){
      console.log(text)
      if(text == '='){
-          return this.calculateResult()
+          return this.validate() && this.calculateResult()
      }
      this.setState({
           resultText: this.state.resultText+text
@@ -72,16 +88,16 @@ export default class App extends Component{
         let row = []
         for (let j = 0 ; j < 3 ; j++){
          row.push(
-                <TouchableOpacity onPress={() => this.buttonPressed(nums[i][j])} style={styles.btn}>
+                <TouchableOpacity key={nums[i][j]} onPress={() => this.buttonPressed(nums[i][j])} style={styles.btn}>
                      <Text style={styles.btntext}>{nums[i][j]}</Text>
                 </TouchableOpacity >)
          }
-         rows.push(<View style={styles.row}>{row}</View>)
+         rows.push(<View key={i} style={styles.row}>{row}</View>)
      }
 
      let opps= []
       for(let i = 0;i < 5 ; i++){
-          opps.push(<TouchableOpacity style={styles.btn} onPress={() => this.operate(this.operations[i])}>
+          opps.push(<TouchableOpacity key={this.operations[i]} style={styles.btn} onPress={() => this.operate(this.operations[i])}>
                        <Text style={styles.white}>{this.operations[i]}</Text>
                     </TouchableOpacity >)
       }
@@ -91,7 +107,7 @@ export default class App extends Component{
                <Text style={styles.resultText}>{this.state.resultText}</Text>
             </View>
             <View style={styles.calculation}>
-                <Text style={styles.calculationText}>121</Text>
+                <Text style={styles.calculationText}>{this.state.calculationText}</Text>
             </View>
             <View style={styles.buttons}>
                 <View style={styles.numbers}>
@@ -117,7 +133,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   btntext:{
-     fontSize:30,
+     fontSize:33,
+     color: 'white',
   },
   white: {
       color: 'white',
@@ -131,23 +148,21 @@ const styles = StyleSheet.create({
   },
   result: {
       flex : 2,
-      backgroundColor: 'red',
+      backgroundColor: 'white',
       justifyContent: 'center',
       alignItems: 'flex-end',
   },
   resultText:{
-       fontSize: 30,
-        color: 'white',
+       fontSize: 35,
   },
   calculation:{
       flex: 1,
-      backgroundColor: 'green' ,
+      backgroundColor: 'white' ,
       justifyContent: 'center',
       alignItems: 'flex-end',
   },
   calculationText: {
       fontSize: 24,
-      color: 'white',
   },
   buttons: {
       flex : 7,
@@ -155,13 +170,14 @@ const styles = StyleSheet.create({
   },
   numbers: {
       flex:3,
-      backgroundColor:'yellow' ,
+      backgroundColor:'#434343' ,
+
   },
   operations: {
       flex : 1,
       justifyContent: 'space-around',
       alignItems:'stretch',
-      backgroundColor: 'black',
+      backgroundColor: '#636363',
   },
 });
 
